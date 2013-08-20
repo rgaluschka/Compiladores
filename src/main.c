@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "comp_dict.h"
 #include "comp_list.h"
 #include "comp_tree.h"
@@ -17,5 +18,10 @@ int main (int argc, char **argv)
   while (token = yylex()){
     printf ("token <%d> at %d\n", token, getLineNumber());
   }
+
+  //testaDicionario();
+  //testaLista();
+  //testaGrafo();
+  //testaArvore();
   return 0;
 }
