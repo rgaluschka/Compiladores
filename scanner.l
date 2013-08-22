@@ -1,7 +1,7 @@
 %{
-#include "tokens.h"
-#include "main.c"
-#include "comp_dict.h"
+#include "include/tokens.h"
+#include "src/main.c"
+#include "include/comp_dict.h"
 %}
 
 DIGIT [0-9]
@@ -10,8 +10,8 @@ LIT_INT "-"?{DIGIT}+
 LIT_FLOAT {LIT_INT}"."{DIGIT}+
 LIT_FALSE false
 LIT_TRUE true
-LIT_CHAR 
-LIT_STRING 
+LIT_CHAR '(\\.|[^\\'])+\'
+LIT_STRING \"(\\.|[^\\"])*\"
 
 %%
 int { return TK_PR_INT; }
@@ -28,7 +28,7 @@ input { return TK_PR_INPUT; }
 output { return TK_PR_OUTPUT; }
 return { return TK_PR_RETURN; }
 
-[,;:()[]{}+-*/<>=!&$] { return yytext[0]; }
+[-,;:\(\)\[\]\{\}+*/<>=!&$] { return yytext[0]; }
 
 "<=" { return TK_OC_LE; }
 ">=" { return TK_OC_GE; }
@@ -37,14 +37,48 @@ return { return TK_PR_RETURN; }
 "&&" { return TK_OC_AND; }
 "||" { return TK_OC_OR; }
 
-{LIT_INT} { return TK_LIT_INT; }
-{LIT_FLOAT} {return TK_LIT_FLOAT; }
-{LIT_FALSE} {return TK_LIT_FALSE; }
-{LIT_TRUE} {return TK_LIT_TRUE; }
-{LIT_CHAR} {return TK_LIT_CHAR; }
-{LIT_STRING} {return TK_LIT_STRING; }
+{LIT_INT} { if(dicionarioProcuraChave(dicionario,yytext) == 0)
+			{
+				dicionarioInsereItem(dicionario,TK_LIT_INT);
+				return TK_LIT_INT;
+			} else return TK_LIT_INT; }
+			
+{LIT_FLOAT} {if(dicionarioProcuraChave(dicionario,yytext) == 0)
+			{
+				dicionarioInsereItem(dicionario,TK_LIT_FLOAT);
+				return TK_LIT_FLOAT;
+			} else return TK_LIT_FLOAT; }
+			
+{LIT_FALSE} { if(dicionarioProcuraChave(dicionario,yytext) == 0)
+			{
+				dicionarioInsereItem(dicionario,TK_LIT_FALSE);
+				return TK_LIT_FALSE;
+			} else return TK_LIT_FALSE; }
+			
+{LIT_TRUE} { if(dicionarioProcuraChave(dicionario,yytext) == 0)
+			{
+				dicionarioInsereItem(dicionario,TK_LIT_TRUE);
+				return TK_LIT_TRUE;
+			} else return TK_LIT_TRUE; }
+			
+{LIT_CHAR} { if(dicionarioProcuraChave(dicionario,yytext) == 0)
+			{
+				dicionarioInsereItem(dicionario,TK_LIT_CHAR);
+				return TK_LIT_CHAR;
+			} else return TK_LIT_CHAR; }
+			
+{LIT_STRING} {if(dicionarioProcuraChave(dicionario,yytext) == 0)
+			{
+				dicionarioInsereItem(dicionario,TK_LIT_STRING);
+				return TK_LIT_STRING;
+			} else return TK_LIT_STRING; }
 
-{ID} { return TK_IDENTIFICADOR; }
+{ID} {if(dicionarioProcuraChave(dicionario,yytext) == 0)
+			{
+				dicionarioInsereItem(dicionario,TK_IDENTIFICADOR);
+				return TK_IDENTIFICADOR;
+			} else return TK_IDENTIFICADOR; }
+
 
 
 

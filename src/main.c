@@ -1,13 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "comp_dict.h"
-#include "comp_list.h"
-#include "comp_tree.h"
-#include "comp_graph.h"
-#include "tokens.h"
+#include "../include/comp_dict.h"
+#include "../include/comp_list.h"
+#include "../include/comp_tree.h"
+#include "../include/comp_graph.h"
+#include "../include/tokens.h"
 
 extern char *yytext;
 extern int getLineNumber();
+comp_dict_t *dicionario;
+
 #define print_nome(TOKEN) printf("%d " #TOKEN " [%s]\n", getLineNumber(), yytext);
 #define print_nome2(TOKEN) printf("%d %c\n", getLineNumber(), TOKEN);
 
@@ -20,7 +22,8 @@ int getLineNumber (void)
 int main (int argc, char **argv)
 {
     int token = 0;
-    
+    dicionario = dicionarioCria(token);
+    dicionarioCriaItem(yytext);
     while (token = yylex()) {
         switch (token){
             case ',':

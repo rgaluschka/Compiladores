@@ -5,12 +5,12 @@
 */
 
 //estuturas de dados temporárias 
-typedef struct comp_dict_item_t {
+typedef struct {
    char *chave;
    struct comp_dict_item_t *prox;
 } comp_dict_item_t;
 
-typedef struct comp_dict_t {
+typedef struct {
    int info;
    comp_dict_item_t *Itens;
 } comp_dict_t;
